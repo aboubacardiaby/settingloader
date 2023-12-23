@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "DcRu5fNJpJO/XGou0JT+eqASWHonu73J4uxhYNusnlr8vt/nhB1Ju9ywufuHan9icxt8RsMZFXlHBrJy8Q4zMQ==",
+  "success": true,
+  "projectFilePath": "/home/developer/Desktop/kube/webapi/loaderweb/loaderweb.csproj",
+  "expectedPackageFiles": [
+    "/home/developer/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "/home/developer/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
+    "/home/developer/.nuget/packages/swashbuckle.aspnetcore/6.5.0/swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
+    "/home/developer/.nuget/packages/swashbuckle.aspnetcore.swagger/6.5.0/swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
+    "/home/developer/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.5.0/swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
+    "/home/developer/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.5.0/swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
