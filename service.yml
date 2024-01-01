@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: setapp
+spec:
+  selector:
+    app: setapp
+  ports:
+  - port: 9080
+    targetPort: 80
