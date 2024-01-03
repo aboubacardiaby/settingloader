@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: setapp
-        image: fouaneregistry.azurecr.io/fouaneregistry:latest
+        image: fouaneregistry.azurecr.io/fouaneregistry/fouaneregistry:latest
         resources:
           limits:
             memory: "128Mi"
