@@ -1,10 +1,13 @@
-apiVersion: apps/v1
-kind: service
+apiVersion: v1
+kind: Service
 metadata:
-  name: setapp
+  name: fouaneregistry-service  
 spec:
-  selector:
-    app: setapp
+  type: LoadBalancer
   ports:
-  - port: 9080
-    targetPort: 80
+    - targetPort: 80
+      name: port80
+      port: 80
+      protocol: TCP
+  selector:
+    app: fouaneregistry
