@@ -1,0 +1,53 @@
+
+trigger:
+- main
+
+name: $(Year:yy).$(Month).$(DayOfMonth).$(BuildID)-$(SourceBranchName)
+
+variables:
+  AgentImage: "windows-latest" 
+  system.debug: true 
+  BuildConfiguration: 'Release'
+stages:
+- stage: 'Build_Stage' #Stage name cannot have spaces
+  displayName: 'Build' #Name displayed when viewing in Azure DevOps
+  jobs:
+  - job: 'Build_Job' #Job name cannot have spaces
+    displayName: 'Application Build' #Name displayed when viewing in Azure DevOps
+    pool:
+      vmImage: $(AgentImage) #See available agent images: https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops#use-a-microsoft-hosted-agent
+    steps:
+    - task: DotNetCoreInstaller@1
+      displayName: 'Use DotNet Core SDK'
+      inputs:
+        version: 6.x
+
+    - task: DotNetCoreCLI@2
+      displayName: Publish App
+      inputs:
+        command: publish  #The publish command does a restore, build and creates a zip file so no need to add extra steps
+        publishWebProjects: true
+        zipAfterPublish: false
+        projects: '**/OM.Complaints/*.csproj'
+        arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/application'
+
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: test #Don't forget to test!
+        projects: '**/*.Tests.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive build'
+      inputs:
+        rootFolderOrFile: '$(build.artifactstagingdirectory)/application'
+        includeRootFolder: false
+        archiveFile: '$(build.artifactstagingdirectory)/app/application.zip'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        pathtoPublish: '$(build.artifactstagingdirectory)\app\application.zip' #Publish (different from the command used above) allows the artifact to be used in later jobs
+        artifactName: 'app'
+        
