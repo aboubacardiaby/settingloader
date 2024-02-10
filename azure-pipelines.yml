@@ -50,4 +50,63 @@ stages:
       inputs:
         pathtoPublish: '$(build.artifactstagingdirectory)\app\application.zip' #Publish (different from the command used above) allows the artifact to be used in later jobs
         artifactName: 'app'
-        
+- stage: 'Deploy_Dev' #Stage name cannot have spaces
+  displayName: 'Dev' #Name displayed when viewing in Azure DevOps
+  dependsOn: ['Build_Stage'] #List of previous stages that must complete before this stage runs
+  jobs:
+  - deployment: Deploy_Dev #No spaces
+    displayName: Dev Deployment #Name displayed in UI
+    pool:
+      vmImage: $(AgentImage) #variable that was defined previously (not shown in this snippet)
+    environment: Dev
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: 'app'
+          - task: ExtractFiles@1
+            displayName: 'Extract files'
+            inputs:
+              archiveFilePatterns: "$(Pipeline.Workspace)/app/application.zip"
+              destinationFolder: "$(Pipeline.Workspace)/files"
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy'
+            inputs:
+              ConnectionType: 'AzureRM' #This is the default Value
+              WebAppKind: 'webApp' #This is the default value
+              azureSubscription: 'settingdevservconnection' #Name of the Service Connection previously created
+              WebAppName: 'settingdev' #Name of the App Service to be deployed to
+              Package: '$(Pipeline.Workspace)/files/loaderweb' #Application files to be deployed
+              enableCustomDeployment: true #These two properties override the default of having 
+              DeploymentType: 'webDeploy'  #the pipeline deciding for us what it thinks the best deployment option should be  
+- stage: 'Deploy_QA' #Stage name cannot have spaces
+  displayName: 'QA' #Name displayed when viewing in Azure DevOps
+  dependsOn: ['Deploy_Dev'] #List of previous stages that must complete before this stage runs
+  jobs:
+  - deployment: Deploy_QA #No spaces
+    displayName: QA Deployment #Name displayed in UI
+    pool:
+      vmImage: $(AgentImage) #variable that was defined previously (not shown in this snippet)
+    environment: QA
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: 'app'
+          - task: ExtractFiles@1
+            displayName: 'Extract files'
+            inputs:
+              archiveFilePatterns: "$(Pipeline.Workspace)/app/application.zip"
+              destinationFolder: "$(Pipeline.Workspace)/files"
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy'
+            inputs:
+              ConnectionType: 'AzureRM' #This is the default Value
+              WebAppKind: 'webApp' #This is the default value
+              azureSubscription: 'settigqaservconnection' #Name of the Service Connection previously created
+              WebAppName: 'settingqa' #Name of the App Service to be deployed to
+              Package: '$(Pipeline.Workspace)/files/loaderweb' #Application files to be deployed
+              enableCustomDeployment: true #These two properties override the default of having 
+              DeploymentType: 'webDeploy'  #the pipeline deciding for us what it thinks the best deployment option should be            
