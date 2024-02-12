@@ -60,9 +60,9 @@ stages:
     timeoutInMinutes: 4320
     pool: server
     steps:     
-      - task: ManualIntervention@8
+      - task: ManualValidation@0
         inputs:
-          emailRecipients: 'adiaby@owens-minor.com'
+          notifyUsers: 'adiaby@owens-minor.com'
           instructions: 'Please approve this request'
   - deployment: Deploy_Dev #No spaces
     displayName: Dev Deployment #Name displayed in UI
