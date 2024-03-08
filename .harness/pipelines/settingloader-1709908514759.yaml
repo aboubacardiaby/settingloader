@@ -44,3 +44,47 @@ pipeline:
             spec: {}
             type: Docker
         type: CI
+    - stage:
+        name: Deploy
+        identifier: Deploy
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: AzureWebApp
+          service:
+            serviceRef: Settingserv
+          environment:
+            environmentRef: Dev
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: azure
+                inputs:
+                  identifier: azure
+                  type: AzureWebApp
+                  spec:
+                    provisioner: <+input>
+          execution:
+            steps:
+              - step:
+                  name: asp-slot
+                  identifier: aspslot
+                  type: AzureSlotDeployment
+                  timeout: 20m
+                  spec:
+                    webApp: settigapp
+                    deploymentSlot: appsv
+                    clean: false
+            rollbackSteps:
+              - step:
+                  name: WebApp rollback
+                  identifier: webAppRollback
+                  type: AzureWebAppRollback
+                  timeout: 20m
+                  spec: {}
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
