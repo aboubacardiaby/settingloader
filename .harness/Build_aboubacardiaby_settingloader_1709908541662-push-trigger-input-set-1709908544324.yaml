@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_aboubacardiaby_settingloader_1709908541662-push-trigger-input-set
+  identifier: Build_aboubacardiaby_settingloader_1709908541662pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_aboubacardiaby_settingloader_1709908541662
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
