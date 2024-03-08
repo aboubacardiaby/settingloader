@@ -26,18 +26,14 @@ pipeline:
                   timeout: ""
                   type: Run
               - step:
-                  identifier: dockerbuild
-                  name: docker_build
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_1
+                  identifier: BuildAndPushDockerRegistry_1
                   spec:
-                    image: plugins/docker
-                    settings:
-                      dry_run: "true"
-                      password: <+input>
-                      repo: hello/world
-                      tags: latest
-                      username: <+input>
-                  timeout: ""
-                  type: Plugin
+                    connectorRef: account.harnessImage
+                    repo: adiaby2609/dtserv
+                    tags:
+                      - v1
           platform:
             os: Linux
             arch: Amd64
@@ -45,6 +41,7 @@ pipeline:
             type: Docker
             spec: {}
         type: CI
+        description: ""
     - stage:
         name: Deploy
         identifier: Deploy
@@ -89,3 +86,4 @@ pipeline:
                 - AllErrors
               action:
                 type: StageRollback
+  tags: {}
