@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_aboubacardiaby_settingloader_1710036840244-pr-trigger-input-set
+  identifier: Build_aboubacardiaby_settingloader_1710036840244prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_aboubacardiaby_settingloader_1710036840244
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
